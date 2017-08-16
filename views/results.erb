@@ -5,8 +5,31 @@
     <title>title</title>
   </head>
   <body>
-   
-   
-   
+    <a href="/">Home</a>
+    <% @result.each do |course, itemHash| %>
+      <h3><%=course.upcase%></h3>
+      <% itemHash.each do |item, price| %>
+        <% if price.class == Hash %>
+          <p><%=item.to_s.gsub("_", " ").capitalize%>:</p>
+          <% price.each do |item1, price1| %>
+            <% if @userBudget >= price1 %>
+              <% item1 = item1.to_s.gsub("_", " ") %>
+              <p><%=item1.capitalize%>: $<%=price1%>0</p>
+            <%end%>
+          <%end%>
+        <%else%>
+          <% if @userBudget >= price %>
+            <% item = item.to_s.gsub("_", " ") %>
+            <p><%=item.capitalize%>: $<%=price%>0</p>
+          <%end%>
+        <%end%>
+      <%end%>
+    <%end%>
+    <form method="POST" action="/course">
+      <h2>What course would you want?</h2>
+      <input type = "hidden" name = "currmenu" value = <%@result%>>
+      <input type="text" name="courseChoice">
+      <input type="submit">
+    </form>
   </body>
 </html>
